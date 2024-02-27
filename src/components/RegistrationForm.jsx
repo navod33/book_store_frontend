@@ -1,8 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 const RegistrationForm = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
@@ -19,10 +22,12 @@ const RegistrationForm = () => {
     try {
       const response = await axios.post('http://localhost:5555/auth/register', formData);
       console.log(response.data);
+      enqueueSnackbar('account created successfully', { variant: 'success' });
       navigate('/home');
 
     } catch (error) {
       console.error(error);
+      enqueueSnackbar('Wrong details', { variant: 'error' });
   
     }
   };

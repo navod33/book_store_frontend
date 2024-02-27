@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; 
+import { useSnackbar } from 'notistack';
 
 const LoginForm = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
@@ -18,10 +21,12 @@ const LoginForm = () => {
     try {
       const response = await axios.post('http://localhost:5555/auth/login', formData);
       console.log(response.data);
+      enqueueSnackbar('Logged successfully', { variant: 'success' });
       navigate('/home');
 
     } catch (error) {
       console.error(error);      
+      enqueueSnackbar('Wrong details', { variant: 'error' });
     }
   };
 
